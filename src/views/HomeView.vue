@@ -1,18 +1,35 @@
+<script lang="ts" setup>
+import { ref } from "vue";
+import { useElementHover } from "@vueuse/core";
+import { EIpcName } from "@/types";
+const ele = ref();
+const isHovered = useElementHover(ele);
+
+function onMouseEnter(e: any) {
+  if (window.api.setIgnoreMouse) {
+    window.api.setIgnoreMouse(false);
+  }
+}
+function onMouseLeave(e: any) {
+  if (window.api.setIgnoreMouse) {
+    window.api.setIgnoreMouse(true, { forward: true });
+  }
+}
+</script>
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div class="home"
+       ref="ele"
+       @mouseenter="onMouseEnter"
+       @mouseleave="onMouseLeave">
+    {{ isHovered }}
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
 
-export default defineComponent({
-  name: 'HomeView',
-  components: {
-    HelloWorld,
-  },
-});
-</script>
+<style lang="scss" scoped>
+.home {
+  width: 100%;
+  height: 100px;
+  background-color: #42b983;
+}
+</style>
